@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>JS TS Function Flow Chart</title>
+
+	<script defer src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+
+	<script>
+		// @babel/parser を読み込むために必要。
+		window.exports = {};
+	</script>
+
+	<!-- ローカル環境で読み込むとき CORS エラーになるので type="module" を外す。 -->
+	<script src="https://cdn.jsdelivr.net/npm/@babel/parser@7/lib/index.min.js" type="module"></script>
+
+	<script defer src="./src/functionFlows.js"></script>
+	<script defer src="./src/index.js"></script>
+	<!-- <script defer src="./src/tests/tests.js"></script> -->
+	<link rel="stylesheet" href="./index.css">
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-143855243-2"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag("js", new Date());
+		gtag("config", "UA-143855243-2");
+	</script>
+</head>
+
+<body>
+	<div class="input_screen" id="input_screen">
+		<h2 class="input_screen__header">JS TS Function Flow Chart</h2>
+		<div class="input_screen__description">Please select a JavaScript/TypeScript/JSX file.</div>
+
+		<input type="file" accept=".js,.jsx,.ts,.tsx" class="select_file" id="select_file">
+		<div class="error" id="error"></div>
+	</div>
+
+	<div id="output_screen" style="display: none;">
+		<h2>Diagram "<span id="filename"></span>"</h2>
+		<div id="diagram" class="diagram"></div>
+
+		<h2>Mermaid</h2>
+		<textarea class="mermaid_textarea" name="mermaid_code" id="mermaid_code"></textarea>
+
+		<h2>Functions</h2>
+		<div class="functions" id="functions">
+			<table id="functions_table">
+				<thead>
+					<tr>
+						<th>Function(to)</th>
+						<th>Count</th>
+						<th>Function(from)</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+
+	<button id="settingDialog__openButton" title="Settings Button" class="settingDialog__openButton">
+		<svg viewBox="0 0 512 512" class="fill-current" xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="m498 215-56-13c-4-14-9-27-16-40l30-48c4-7 3-17-3-23l-32-32c-6-6-16-7-23-3l-48 30c-13-7-26-12-40-16l-13-56c-2-8-10-14-18-14h-46c-8 0-16 6-18 14l-13 56c-14 4-27 9-40 16l-48-30c-7-4-17-3-23 3L59 91c-6 6-7 16-3 23l30 48c-7 13-12 26-16 40l-56 13c-8 2-14 10-14 18v46c0 8 6 16 14 18l56 13c4 14 9 27 16 40l-30 48c-4 7-3 17 3 23l32 32c6 6 16 7 23 3l48-30c13 7 26 12 40 16l13 56c2 8 10 14 18 14h46c8 0 16-6 18-14l13-56c14-4 27-9 40-16l48 30c7 4 17 3 23-3l32-32c6-6 7-16 3-23l-30-48c7-13 12-26 16-40l56-13c8-2 14-10 14-18v-46c0-8-6-16-14-18zM256 352c-56 0-96-40-96-96s40-96 96-96 96 40 96 96-40 96-96 96z" />
+		</svg>
+	</button>
+
+	<dialog id="settingDialog" class="settingDialog">
+		<h1>Settings</h1>
+
+		<button id="settingDialog__closeIcon" class="settingDialog__closeIcon">
+			<svg viewBox="0 0 512 512" class="fill-current" xmlns="http://www.w3.org/2000/svg">
+				<path d="M512 71 441 0 256 185 71 0 0 71l185 185L0 441l71 71 185-185 185 185 71-71-185-185z" />
+			</svg>
+		</button>
+
+		<h2 style="display: inline-block; cursor: help;"
+			title="It ignores the function flows which have the function(to) whose object is in the setting. It also ignores the target of new in the setting.">
+			Object names to ignore</h2>
+		<button id="ignore_objectNames__resetButton" class="settingDialog__button"
+			style="margin-inline-start: 1em; font-size: .85em;">Reset</button>
+
+		<textarea class="settingDialog__textarea" name="ignore_objectNames" id="ignore_objectNames"></textarea>
+
+		<h2 style="display: inline-block; cursor: help;"
+			title="(1) It includes the function flows which have the function(to) in the setting. The setting has higher priority than the other 2 settings. (2) It adds the function flows where the argument name of the caller function(to) is in the setting.">
+			Function names to include</h2>
+		<button id="include_functionNames__resetButton" class="settingDialog__button"
+			style="margin-inline-start: 1em; font-size: .85em;">Reset</button>
+
+		<textarea class="settingDialog__textarea" name="include_functionNames" id="include_functionNames"></textarea>
+
+		<h2 style="display: inline-block; cursor: help;"
+			title="It ignores the function flows which have the function(to) in the setting.">Function names to ignore
+		</h2>
+		<button id="ignore_functionNames__resetButton" class="settingDialog__button"
+			style="margin-inline-start: 1em; font-size: .85em;">Reset</button>
+
+		<textarea class="settingDialog__textarea" name="ignore_functionNames" id="ignore_functionNames"></textarea>
+
+		<div style="display: flex; justify-content: space-around; margin-block-start: 22px;">
+			<button id="settingDialog__okButton" class="settingDialog__button">OK</button>
+			<button id="settingDialog__cancelButton" class="settingDialog__button">Cancel</button>
+		</div>
+	</dialog>
+</body>
+
+</html>

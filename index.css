@@ -1,0 +1,218 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	line-height: 1.5;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+:root {
+	--color-text  : #2E2214;
+	--color-base  : #F9F9F8;
+	--color-accent: #746F57;
+}
+
+@font-face {
+	font-family  : "fix-biz-underline";
+	src          : local("Hiragino Sans"), local("Hiragino-Sans"), local("游ゴシック体"), local("YuGothic"), local("Meiryo"), local("Meiryo UI"), local("メイリオ");
+	unicode-range: U+005F, U+FF3F;
+}
+
+body {
+	font-family: fix-biz-underline, BIZ UDPGothic, -apple-system, BlinkMacSystemFont, Segoe UI, Consolas, sans-serif;
+	color      : var(--color-text);
+	min-height : 100vh;
+	background : linear-gradient(90deg, #9e997c 0%, #ada889 80%, #9e997c 100%);
+}
+
+
+.input_screen {
+	position         : fixed;
+	top              : 45%;
+	left             : 50%;
+	transform        : translateY(-50%) translateX(-50%);
+	-webkit-transform: translateY(-50%) translateX(-50%);
+	border-radius    : 5px;
+	background-color : var(--color-base);
+	padding          : 2em;
+	box-shadow       : 1px 3px 12px 0px #5c5a4c;
+	text-align       : center;
+	width            : 50%;
+}
+
+.dragenter {
+	box-shadow: 0px 0px 12px 0px #ead018;
+}
+
+.input_screen__header {
+	margin-top: 0px;
+}
+
+.input_screen__description {
+	margin: 1.6em 0 1em 0;
+}
+
+.select_file {
+	cursor   : pointer;
+	font-size: 0;
+}
+
+.select_file::file-selector-button {
+	font-size       : initial;
+	cursor          : pointer;
+	color           : var(--color-base);
+	background-color: var(--color-accent);
+	border          : 0;
+	border-radius   : 5px;
+	padding         : 8px 16px;
+	text-align      : center;
+}
+
+.select_file::file-selector-button:hover {
+	background: #504c3b;
+}
+
+.error {
+	color             : red;
+	margin-block-start: .5em;
+}
+
+
+
+.diagram {
+	min-height  : 3rem;
+	margin-block: 5px;
+}
+
+.mermaid_textarea {
+	margin-block    : 5px;
+	width           : 80%;
+	height          : 5rem;
+	padding         : 5px;
+	color           : inherit;
+	background-color: #F9F9F8;
+}
+
+
+.functions table {
+	border-collapse : collapse;
+	background-color: var(--color-base);
+	white-space     : pre-wrap;
+}
+
+.functions :where(th, td) {
+	border : 1px solid var(--color-accent);
+	padding: 4px 12px;
+}
+
+.functions th {
+	background-color: var(--color-base);
+}
+
+.functions tr:nth-child(odd) {
+	background-color: #e4e4e4;
+}
+
+
+/* mermaidの<svg>の子に<style>が入るので!importantを付ける。*/
+#svg_diagram span {
+	color: var(--color-text) !important;
+}
+
+#svg_diagram .node rect {
+	stroke: var(--color-accent) !important;
+	fill  : var(--color-base) !important;
+}
+
+#svg_diagram .flowchart-link {
+	stroke: var(--color-accent) !important;
+}
+
+#svg_diagram .marker {
+	stroke: var(--color-accent) !important;
+	fill  : var(--color-accent) !important;
+}
+
+#svg_diagram .edgeLabel p {
+	background-color: var(--color-base) !important;
+}
+
+#svg_diagram .node {
+	cursor: pointer;
+}
+
+
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, .5);
+}
+
+.settingDialog__openButton {
+	background-color: transparent;
+	border-width    : 0;
+	color           : var(--color-accent);
+	position        : fixed;
+	top             : 0;
+	right           : 0;
+	height          : 32px;
+	width           : 32px;
+	margin          : 8px;
+	padding         : 0;
+	cursor          : pointer;
+}
+
+.settingDialog__openButton:hover {
+	color: #504c3b;
+}
+
+.fill-current {
+	fill: currentColor;
+}
+
+.settingDialog {
+	background-color: #d6d5ce;
+	color           : var(--color-text);
+	width           : max(80%, 600px);
+}
+
+.settingDialog__closeIcon {
+	background-color: transparent;
+	border-width    : 0;
+	color           : var(--color-accent);
+	position        : fixed;
+	top             : calc(8px + 1em);
+	right           : calc((100% - min(max(80%, 600px), (100% - 6px) - 2em))/2 + 22px);
+	height          : 32px;
+	width           : 32px;
+	cursor          : pointer;
+}
+
+.settingDialog__closeIcon:hover {
+	color: #504c3b;
+}
+
+.settingDialog__textarea {
+	background-color: var(--color-base);
+	color           : var(--color-text);
+	width           : 100%;
+	display         : block;
+	margin-inline   : auto;
+	height          : 8em;
+	line-height     : 1.2;
+	resize          : vertical
+}
+
+.settingDialog__button {
+	font-size: 1.2em;
+	padding  : 5px;
+	cursor   : pointer;
+}
