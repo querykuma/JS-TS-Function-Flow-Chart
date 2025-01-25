@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable new-cap */
 /* eslint-disable no-undef */
 /* eslint-disable no-var */
@@ -71,5 +72,19 @@ var o10 = {
         "b1": {
             m1() { test5(); }
         }
+    }
+};
+
+t = {
+    "t2": "t3"
+};
+o11 = {
+    [(1, t.t2)]() {
+        test6();
+    }
+};
+var o12 = {
+    [(1, t.t2)]() {
+        test6();
     }
 };

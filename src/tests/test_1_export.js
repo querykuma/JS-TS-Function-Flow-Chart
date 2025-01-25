@@ -65,6 +65,20 @@ var o10 = {
             m1() { test5(); }
         }
     }
+};
+
+t = {
+    "t2": "t3"
+};
+o11 = {
+    [(1, t.t2)]() {
+        test6();
+    }
+};
+var o12 = {
+    [(1, t.t2)]() {
+        test6();
+    }
 };`;
 
 export const expected = `[
@@ -126,6 +140,16 @@ export const expected = `[
     {
         "s_from": "o10.a2.b1.m1",
         "s_to": "test5",
+        "n_count": 1
+    },
+    {
+        "s_from": "o11.?",
+        "s_to": "test6",
+        "n_count": 1
+    },
+    {
+        "s_from": "o12.?",
+        "s_to": "test6",
         "n_count": 1
     }
 ]`;

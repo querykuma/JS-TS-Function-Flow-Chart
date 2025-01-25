@@ -15,6 +15,7 @@ module.exports = {
         "kuma/no-boolean-member": "error",
         "kuma/no-boolean-in": "error",
         "kuma/no-eq-boolean": "error",
+        "kuma/enforce-history-second-arg-empty": "error",
         "accessor-pairs": "error",
         "array-bracket-newline": "error",
         "array-bracket-spacing": "error",

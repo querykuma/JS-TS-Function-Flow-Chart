@@ -4,6 +4,11 @@
     let l_previous_click_diagram_global;
     let initialize_Maps_global;
 
+    /**
+     * 初期状態でURLからsearchとhashを除く。
+     */
+    const s_initial_url_global = location.href.match(/\/([^/#?]*)(?:[#?][^/]*)?$/u)[1];
+
     const s_START_color_global = "#ffcaea";
 
     const e_input_screen_global = document.getElementById("input_screen");
@@ -12,7 +17,7 @@
     const e_diagram_global = document.getElementById("diagram");
     const e_mermaid_code_global = document.getElementById("mermaid_code");
 
-    history.replaceState({ "number": 0 }, "");
+    history.replaceState({ "number": 0 }, "", s_initial_url_global);
 
     const escape_code = (s_mermaid_code) => s_mermaid_code.replaceAll(/\\/gu, "\\\\").replaceAll(/[_@*]/gu, "\\$&");
 
@@ -96,7 +101,7 @@
         /**
          * Object.create(null) としたのは o_functions={} なら if 条件の判定 o_functions[o_function_flow.s_to] でエラーになる場合があるため。
          * o_function_flow.s_to がプロトタイプ名と被ったときプロパティ名が最初から存在すると判定されてしまう。
-         * if 条件の判定ほうも Object.hasOwnProperty.call に変更した。
+         * if 条件判定のほうも Object.hasOwnProperty.call に変更した。
          */
         const o_functions = Object.create(null);
 
@@ -383,9 +388,9 @@
             e_output_screen_global.style.display = "none";
 
             e_input_screen_global.classList.remove("dragenter");
-            document.body.style.cursor = "initial";
+            document.body.style.cursor = "";
 
-            history.replaceState({ "number": 0 }, "");
+            history.replaceState({ "number": 0 }, "", s_initial_url_global);
         };
 
         if (s_code_global === void 0) {
@@ -469,10 +474,10 @@
 
         e_input_screen_global.classList.remove("dragenter");
         // eslint-disable-next-line require-atomic-updates
-        document.body.style.cursor = "initial";
+        document.body.style.cursor = "";
 
         if (history.state?.number !== 1) {
-            history.pushState({ "number": 1 }, "");
+            history.pushState({ "number": 1 }, "", `${s_initial_url_global}?diagram`);
         }
     };
 
@@ -484,22 +489,20 @@
     const e_select_file = document.getElementById("select_file");
     const e_body = document.body;
 
-    const l_change_file = () => {
+    const l_change_file = async () => {
         const { files } = e_select_file;
         const file = files[0];
         const s_filename = file.name;
         s_filename_global = s_filename;
 
-        const reader = new FileReader();
+        const s_code = await file.text();
 
-        reader.onload = () => {
-            const s_code = reader.result;
-            s_code_global = s_code;
+        s_code_global = s_code;
 
-            update_output_screen(s_code, s_filename);
-        };
+        // eslint-disable-next-line require-atomic-updates
+        e_select_file.value = "";
 
-        reader.readAsText(file);
+        update_output_screen(s_code, s_filename);
     };
 
     const l_dragenter_body = (e) => {
@@ -518,7 +521,7 @@
         }
     };
 
-    const l_drop_handler = (e) => {
+    const l_drop_handler = async (e) => {
         e.preventDefault();
 
         const item = [...e.dataTransfer.items].find((a) => a.kind === "file");
@@ -529,16 +532,11 @@
         const s_filename = file.name;
         s_filename_global = s_filename;
 
-        const reader = new FileReader();
+        const s_code = await file.text();
 
-        reader.onload = () => {
-            const s_code = reader.result;
-            s_code_global = s_code;
+        s_code_global = s_code;
 
-            update_output_screen(s_code, s_filename);
-        };
-
-        reader.readAsText(file);
+        update_output_screen(s_code, s_filename);
     };
 
     const l_dragover_body = (e) => {
